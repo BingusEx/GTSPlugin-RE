@@ -1,0 +1,26 @@
+{
+  "name": "gtsplugin",
+  "version-string": "1",
+  "builtin-baseline": "984f9232b2fe0eb94f5e9f161d6c632c581fff0c",
+  "features": {
+    "plugin": {
+      "description": "Build the plugin",
+      "dependencies": [
+        "xbyak",
+        "catch2",
+        "fmt",
+        "directxtk",
+        "rapidcsv",
+        "spdlog",
+        "clib-util",
+        "toml11",
+        "nlohmann-json",
+        "magic-enum",
+        "boost-pfr",
+        "lz4",
+        "glm"
+      ]
+    }
+  },
+  "default-features": ["plugin"]
+}

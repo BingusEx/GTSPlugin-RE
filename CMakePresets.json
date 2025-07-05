@@ -1,0 +1,165 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 21,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "common",
+      "hidden": true,
+      "cacheVariables": {
+        "SKSE_SUPPORT_XBYAK": "ON"
+      }
+    },
+    {
+      "name": "platform-win32",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL"
+      },
+      "environment": {
+        "PROJECT_PLATFORM_FLAGS": "-DWIN32_LEAN_AND_MEAN -DNOMINMAX",
+        "PROJECT_PLATFORM": "windows"
+      }
+    },
+    {
+      "name": "platform-win32-unicode",
+      "hidden": true,
+      "inherits": "platform-win32",
+      "environment": {
+        "PROJECT_TEXT_FLAGS": "-DUNICODE -D_UNICODE"
+      }
+    },
+    {
+      "name": "generator-ninja",
+      "hidden": true,
+      "generator": "Ninja"
+    },
+    {
+      "name": "vcpkg",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": {
+          "type": "STRING",
+          "value": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+        },
+        "VCPKG_OVERLAY_PORTS": {
+          "type": "STRING",
+          "value": "${sourceDir}/cmake/ports/"
+        },
+        "VCPKG_TARGET_TRIPLET": "x64-windows-static-md"
+      }
+    },
+    {
+      "name": "win64",
+      "hidden": true,
+      "architecture": "x64",
+      "cacheVariables": {
+        "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL"
+      }
+    },
+    {
+      "name": "msvc",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_CXX_FLAGS": "/EHsc /MP $penv{CXXFLAGS}"
+      },
+      "vendor": {
+        "microsoft.com/VisualStudioSettings/CMake/1.0": {
+          "intelliSenseMode": "windows-msvc-x64",
+          "enableMicrosoftCodeAnalysis": true,
+          "enableClangTidyCodeAnalysis": true
+        }
+      }
+    },
+    {
+      "name": "base-config",
+      "hidden": true,
+      "inherits": [
+        "common",
+        "vcpkg",
+        "platform-win32-unicode",
+        "generator-ninja",
+        "msvc"
+      ],
+      "cacheVariables": {
+        "ENABLE_SKYRIM_AE": "ON",
+        "ENABLE_SKYRIM_SE": "ON",
+        "ENABLE_SKYRIM_VR": "OFF",
+        "BUILD_TESTS": "OFF"
+      }
+    },
+    {
+      "name": "Debug",
+      "displayName": "Debug",
+      "description": "Configure debug build.",
+      "inherits": "base-config",
+      "binaryDir": "${sourceDir}/build/Debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "Release",
+      "displayName": "Release (Default)",
+      "description": "Configure release build with SSE4.2.",
+      "inherits": "base-config",
+      "binaryDir": "${sourceDir}/build/Release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "GTS_ENABLE_AVX": "OFF"
+      }
+    },
+    {
+      "name": "Release-AVX",
+      "displayName": "Release (AVX)",
+      "description": "Configure release build with AVX.",
+      "inherits": "base-config",
+      "binaryDir": "${sourceDir}/build/Release-AVX",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "GTS_ENABLE_AVX": "ON"
+      }
+    },
+    {
+      "name": "Strict",
+      "displayName": "Strict",
+      "description": "Configure strict build with warnings as errors.",
+      "inherits": "base-config",
+      "binaryDir": "${sourceDir}/build/Strict",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "GTS_STRICT_COMPILE": "ON",
+        "GTS_ENABLE_AVX": "OFF"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "Debug",
+      "displayName": "Build AE/SE (Debug)",
+      "configurePreset": "Debug",
+      "description": "Compile a debug build."
+    },
+    {
+      "name": "Release",
+      "displayName": "Build AE/SE (Release)",
+      "configurePreset": "Release",
+      "description": "Compile an optimized release build (SSE4.2)."
+    },
+    {
+      "name": "Release-AVX",
+      "displayName": "Build AE/SE (Release-AVX)",
+      "configurePreset": "Release-AVX",
+      "description": "Compile an optimized release build (AVX)."
+    },
+    {
+      "name": "Strict",
+      "displayName": "Build AE/SE (Strict)",
+      "configurePreset": "Strict",
+      "description": "Compile a strict build with warnings as errors."
+    }
+  ]
+}
