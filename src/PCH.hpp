@@ -6,6 +6,7 @@
 #include <REL/REL.h>
 
 //stdlib
+#include <corecrt_math_defines.h> //TODO Remove this
 #include <cassert>
 #include <cctype>
 #include <cerrno>
@@ -123,11 +124,49 @@
 #include <magic_enum/magic_enum.hpp>    //https://github.com/Neargye/magic_enum
 #include <lz4.h>
 #include <git.h>
+#include <cpp-i18n/Translator.hpp>
 
 #define DLLEXPORT __declspec(dllexport)
 
 using namespace std::literals;
 using namespace REL::literals;
+
+namespace reflect {
+	//Fix ambiguity in reflects' usage of the detail namespace
+	using namespace reflect::v1_2_5::detail;
+}
+
+namespace GTS {
+	using namespace std;
+	using namespace SKSE;
+	using namespace RE;
+}
+
+namespace DebugUtil {
+	using namespace GTS;
+	using namespace RE;
+}
+
+namespace Hooks {
+	using namespace std;
+	using namespace SKSE;
+	using namespace RE;
+	using namespace RE::BSScript;
+	using namespace RE::BSScript::Internal;
+	using namespace GTS;
+}
+
 namespace logger = SKSE::log;
 
+//Own Includes
+#include "Config/ConfigUtil.hpp"
+#include "Constants.hpp"
+#include "Profiler/Profiler.hpp"
+#include "Events/Events.hpp"
+#include "Utils/Utils.hpp"
+#include "Scale/Scale.hpp"
+#include "Scale/ModScale.hpp"
+#include "Scale/Height.hpp"
+#include "Data/Data.hpp"
+#include "Hooks/Hooks.hpp"
 #include "Version.hpp"

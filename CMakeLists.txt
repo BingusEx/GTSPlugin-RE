@@ -7,7 +7,7 @@ cmake_policy(VERSION 3.21...3.31)
 
 project(
 	GTSPlugin
-	VERSION 0.0.0.1
+	VERSION 3.0.3.1
 	DESCRIPTION "The main SKSE plugin of the Size Matters mod"
 	LANGUAGES CXX
 )
@@ -30,6 +30,7 @@ option(GTS_BUILD_DISTRIBUTION "Construct a distribution folder after each build"
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE BOOL "Export compile_commands.json")
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+add_compile_definitions(_ENABLE_EXTENDED_ALIGNED_STORAGE)
 
 # Check if MSVC is the compiler
 if(MSVC)
@@ -52,17 +53,6 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(xSEPlugin)
 
 # #######################################################################################################################
-# # Find dependencies - VCPKG
-# #######################################################################################################################
-
-find_package(Boost REQUIRED)
-find_package(glm CONFIG REQUIRED)
-find_package(lz4 CONFIG REQUIRED)
-find_package(xbyak CONFIG REQUIRED)
-find_package(toml11 CONFIG REQUIRED)
-find_package(nlohmann_json 3.12.0 REQUIRED)
-
-# #######################################################################################################################
 # # Find dependencies - VCPKG Ports
 # #######################################################################################################################
 
@@ -76,20 +66,40 @@ include(FetchContent)
 
 # Git Version Tracking
 FetchContent_Declare(cmake_git_version_tracking                   
-  GIT_REPOSITORY https://github.com/andrew-hardin/cmake-git-version-tracking.git
-  GIT_TAG 6c0cb87edd029ddfb403a8e24577c144a03605a6
-  GIT_SHALLOW ON
+    GIT_REPOSITORY https://github.com/andrew-hardin/cmake-git-version-tracking.git
+    GIT_TAG 6c0cb87edd029ddfb403a8e24577c144a03605a6
+    GIT_SHALLOW ON
 )
 FetchContent_MakeAvailable(cmake_git_version_tracking)
 
 # Boost Reflect
 FetchContent_Declare(
-  boost_ext_reflect
-  GIT_REPOSITORY https://github.com/qlibs/reflect
-  GIT_SHALLOW ON
-  GIT_TAG v1.2.6
+    boost_ext_reflect
+    GIT_REPOSITORY https://github.com/qlibs/reflect
+    GIT_SHALLOW ON
+    GIT_TAG v1.2.6
 )
 FetchContent_MakeAvailable(boost_ext_reflect)
+
+FetchContent_Declare(
+    cpp-i18n
+    GIT_REPOSITORY   https://github.com/Sinan-Karakaya/cpp-i18n.git
+    GIT_SHALLOW ON
+    GIT_TAG v0.2.2
+)
+
+FetchContent_MakeAvailable(cpp-i18n)
+
+# #######################################################################################################################
+# # Find dependencies - VCPKG
+# #######################################################################################################################
+
+find_package(Boost REQUIRED)
+find_package(glm CONFIG REQUIRED)
+find_package(lz4 CONFIG REQUIRED)
+find_package(xbyak CONFIG REQUIRED)
+find_package(toml11 CONFIG REQUIRED)
+find_package(nlohmann_json 3.12.0 REQUIRED)
 
 # #######################################################################################################################
 # # VSCode Exclude Clib from search
@@ -113,9 +123,6 @@ if(BUILD_INSIDE_VSCODE)
         file(WRITE "${VSCODE_SETTINGS_FILE}" 
 [[
 {
-  "files.exclude": {
-    "**/extern/CommonLibNG": true
-  },
   "search.exclude": {
     "**/extern/CommonLibNG": true
   }
@@ -135,11 +142,13 @@ target_include_directories(
 	${GLM_INCLUDE_DIRS}
 	${CLIBUTIL_INCLUDE_DIRS}
 	${boost_ext_reflect_SOURCE_DIR}
+    ${cpp-i18n_SOURCE_DIR}/include
 )
 
 target_link_libraries(
 	${PROJECT_NAME}
 	PRIVATE
+    cpp-i18n
 	xbyak::xbyak
 	Boost::headers
 	toml11::toml11

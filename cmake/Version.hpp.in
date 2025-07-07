@@ -2,7 +2,8 @@
 
 #include <string_view>
 
-namespace Plugin {
+namespace GTSPlugin {
+
     using namespace std::literals;
 
     inline constexpr REL::Version ModVersion {
