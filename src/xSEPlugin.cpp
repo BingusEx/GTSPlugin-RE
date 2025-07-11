@@ -16,6 +16,8 @@ using namespace RE;
 using namespace RE::BSScript;
 using namespace GTS;
 
+#define GTSCONSOLE
+
 namespace {
 
 	void InitializeLogging() {
@@ -199,7 +201,7 @@ SKSEPluginLoad(const LoadInterface * a_skse){
 	//I mean is this good? No. But does it finnaly allow us to have working breakpoints in the dll when using a debugger? Yes.
 
 	#ifdef GTSCONSOLE
-		AllocateConsole();
+		//AllocateConsole();
     #endif
 
 	#ifdef GTSDEBUG
@@ -207,7 +209,7 @@ SKSEPluginLoad(const LoadInterface * a_skse){
 		std::cout << "GTSPlugin Debug Build" << '\n';
 	#endif
 
-	InitializeLogging();
+
 	LogPrintPluginInfo();
 
 	#ifndef GTSCONSOLE
@@ -219,6 +221,7 @@ SKSEPluginLoad(const LoadInterface * a_skse){
 
 
 	InitializeMessaging();
+	InitializeLogging();
 	Hooks::Install();
 	InitializePapyrus();
 	InitializeSerialization();

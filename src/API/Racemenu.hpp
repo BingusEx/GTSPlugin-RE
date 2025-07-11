@@ -22,7 +22,7 @@ namespace GTS {
 		private:
 
 		static inline SKEE::IBodyMorphInterface* RaceMenuInterface = nullptr;
-		static constexpr std::string MorphKey = "GTSPlugin";
+		static inline const std::string MorphKey = "GTSPlugin";
 
 	};
 

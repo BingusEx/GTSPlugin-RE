@@ -151,8 +151,6 @@ namespace Hooks {
 	using namespace std;
 	using namespace SKSE;
 	using namespace RE;
-	using namespace RE::BSScript;
-	using namespace RE::BSScript::Internal;
 	using namespace GTS;
 }
 

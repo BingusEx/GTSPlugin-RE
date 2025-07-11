@@ -1,5 +1,27 @@
 add_compile_definitions(SKYRIM)
-set(CommonLibPath "extern/CommonLibNG")
+
+include(FetchContent)
+
+FetchContent_Declare(
+	CommonLibSSE                   
+    GIT_REPOSITORY https://github.com/alandtse/CommonLibVR/
+    GIT_TAG 2e8e84ec0801dc50ef1a8b9afec62f2e606e48c5
+    GIT_SHALLOW ON
+)
+
+
+# --- Configure options before FetchContent_MakeAvailable
+set(REX_OPTION_JSON OFF CACHE BOOL "" FORCE)
+set(REX_OPTION_TOML OFF CACHE BOOL "" FORCE)
+set(REX_OPTION_INI OFF CACHE BOOL "" FORCE)
+set(SKSE_SUPPORT_XBYAK ON CACHE BOOL "" FORCE)
+set(ENABLE_SKYRIM_SE ON CACHE BOOL "" FORCE)
+set(ENABLE_SKYRIM_AE ON CACHE BOOL "" FORCE)
+set(ENABLE_SKYRIM_VR OFF CACHE BOOL "" FORCE)
+set(BUILD_TESTS OFF CACHE BOOL "" FORCE)
+
+# --- Make the content available
+FetchContent_MakeAvailable(CommonLibSSE)
 
 # =================================================================================================
 # # Target Architecture Configuration
@@ -140,8 +162,6 @@ target_link_options(
 	"$<$<CONFIG:DEBUG>:/INCREMENTAL;/OPT:NOREF;/OPT:NOICF>"
 	"$<$<CONFIG:RELEASE>:/LTCG;/INCREMENTAL:NO;/OPT:REF;/OPT:ICF;/DEBUG:FULL>"
 )
-
-add_subdirectory(${CommonLibPath} ${CommonLibName} EXCLUDE_FROM_ALL)
 
 if(CMAKE_GENERATOR MATCHES "Visual Studio" AND TARGET CommonLibSSE)
     set_target_properties(CommonLibSSE PROPERTIES

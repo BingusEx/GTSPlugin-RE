@@ -1,5 +1,5 @@
 #include "Hooks/Detours/FunctionHook.hpp"
-#include "Hooks/Detours/Detours.hpp"
+#include "Hooks/Util/Detours/Detours.hpp"
 
 namespace Hooks {
 

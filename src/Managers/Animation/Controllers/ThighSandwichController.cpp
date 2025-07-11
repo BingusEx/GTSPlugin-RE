@@ -16,11 +16,12 @@ using namespace GTS;
 
 
 namespace {
+
 	constexpr float MINIMUM_SANDWICH_DISTANCE = 70.0f;
 	constexpr float SANDWICH_ANGLE = 60;
 	constexpr float PI = std::numbers::pi_v<float>;
 
-	constexpr string rune_node = "GiantessRune";
+	constexpr string_view rune_node = "GiantessRune";
 
 	void CantThighSandwichPlayerMessage(Actor* giant, Actor* tiny, float sizedifference) {
 		if (sizedifference < Action_Sandwich) {
